@@ -7,8 +7,12 @@ import { StoreModule } from '@ngrx/store';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';    
+import { Ng2SmartTableModule } from 'ng2-smart-table';
+
+import { RootStoreModule } from './root-store/root-store.module'
+
 import { BankComponent } from './bank/bank.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [AppComponent, BankComponent],
@@ -23,6 +27,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
       maxAge: 25, // Retains last 25 states
     }),
     NgbModule,
+    Ng2SmartTableModule,
+    RootStoreModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

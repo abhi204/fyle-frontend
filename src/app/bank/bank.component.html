@@ -1,1 +1,72 @@
-<p>bank works!</p>
+<div class="container p-3">
+    <div class="d-flex align-items-center">
+        <h1> Bank Branches </h1>
+        <div *ngIf="(callStatus$ | async)?.loading">
+            <div class="spinner-border text-dark ml-3 mr-auto" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>    
+        </div>
+    </div>
+    <br>
+
+    <div class="d-flex">
+        <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
+            <button class="btn btn-outline-primary mr-2" id="dropdownManual" ngbDropdownAnchor
+                (focus)="myDrop.open()">Bangalore</button>
+            <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                <button ngbDropdownItem>Bangalore</button>
+                <button ngbDropdownItem>Mumbai</button>
+                <button ngbDropdownItem>Delhi</button>
+                <button ngbDropdownItem>Pune</button>
+                <button ngbDropdownItem>Chennai</button>
+                <button ngbDropdownItem>Kolkata</button>
+            </div>
+        </div>
+        <input class="form-control mr-2" type="text" [(ngModel)]="searchText" (ngModelChange)="searchTextUpdate$.next($event)" (keyup.enter)="doSearch()">
+        <div class="dropdown btn-group dropup mr-1 mb-1" ngbDropdown>
+            <div class="btn btn-danger btn-raised">All</div>
+            <button type="button" class="btn btn-danger btn-raised dropdown-toggle" ngbDropdownToggle
+                aria-haspopup="true" aria-expanded="false">
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <div ngbDropdownMenu class="dropdown-menu" role="menu">
+                <!-- <a *ngFor="let attr of attributes" class="dropdown-item" (click)="searchAttribute = attr; doSearch()">{{attr}}</a>  -->
+                <button ngbDropdownItem>IFSC</button>
+                <button ngbDropdownItem>Branch</button>
+                <button ngbDropdownItem>Address</button>
+                <button ngbDropdownItem>City</button>
+                <button ngbDropdownItem>District</button>
+                <button ngbDropdownItem>State</button>
+                <button ngbDropdownItem>Bank ID</button>
+            </div>
+        </div>
+    </div>
+    
+    <br>
+
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Page Size</span>
+        </div>
+        <input class="form-control" type="number" [(ngModel)]="pageSize" (keyup.enter)="doSearch()">
+    </div>
+
+    <br>
+
+    <div *ngIf="(searchResult$ | async) as searchResultData">
+
+        <button [disabled]="(callStatus$ | async)?.loading" *ngIf="searchResultData.previous" class="btn btn-success btn-fab mr-1 float-left" (click)="fetchPage(searchResultData.previous)"> Previous <i class="icon-control-rewind"> </i></button>
+        <button [disabled]="(callStatus$ | async)?.loading" *ngIf="searchResultData.next" class="btn btn-success btn-fab mr-1 float-right" (click)="fetchPage(searchResultData.next)"> Next <i class="icon-control-forward"></i> </button>
+        
+        <div *ngIf="searchResultData">
+          <div class="table-responsive">
+            <ng2-smart-table
+              [settings]="tableSettings"
+              [source]="searchResultData.tableFormatData"
+            >
+            </ng2-smart-table>
+          </div>
+        </div>
+      </div>
+
+</div>
