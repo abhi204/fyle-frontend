@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -15,6 +15,7 @@ import { RootStoreModule } from './root-store/root-store.module'
 
 import { BankComponent } from './bank/bank.component';
 import { FavouriteComponent } from "./favourite/favourite.component";
+import { CacheInterceptor } from './services/cache.interceptor';
 
 @NgModule({
   declarations: [AppComponent, BankComponent, FavouriteComponent],
@@ -33,7 +34,9 @@ import { FavouriteComponent } from "./favourite/favourite.component";
     Ng2SmartTableModule,
     RootStoreModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
