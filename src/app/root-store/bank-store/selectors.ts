@@ -15,14 +15,6 @@ export const selectCallStatus = createSelector(
     })
 );
 
-// export const selectBranchSearchData = createSelector(
-//     selectBranchSearch,
-//     (state: BranchSearchState) => {
-//         return {
-//             searchData: state.searchData,
-//         };
-//     }
-// );
 
 // Search data selector
 export const selectSearchData = createSelector(
@@ -31,7 +23,6 @@ export const selectSearchData = createSelector(
 
         if (!searchData)
             return searchData; // null
-
 
         return {
             ...searchData,

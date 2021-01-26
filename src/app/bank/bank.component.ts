@@ -7,6 +7,9 @@ import * as selectors from "../root-store/bank-store/selectors";
 import * as models from "../root-store/bank-store/models";
 import { Observable, Subject } from 'rxjs';
 import { filter, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+
+import { FavouriteSliderComponent } from "./favourite-slider/favourite-slider.component";
+
 @Component({
   selector: 'app-bank',
   templateUrl: './bank.component.html',
@@ -45,13 +48,18 @@ export class BankComponent implements OnInit {
         title: 'State',
       },
       bank_id: {
-        title: "Bank ID"
+        title: 'Bank ID'
+      },
+      favourite: {
+        title: 'Favourite',
+        type: 'custom',
+        renderComponent: FavouriteSliderComponent,
+        sort: false,
+        filter: false,
       }
     },
-    actions: false,
-    pager: {
-      display: false
-    }
+    pager: { display: false },
+    actions: { add: false, edit: false, delete: false },
   };
 
   constructor(private store: Store<any>, private router: Router) { }
