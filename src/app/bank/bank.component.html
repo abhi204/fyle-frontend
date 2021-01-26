@@ -1,11 +1,12 @@
 <div class="container p-3">
-    <div class="d-flex align-items-center">
-        <h1> Bank Branches </h1>
-        <div *ngIf="(callStatus$ | async)?.loading">
-            <div class="spinner-border text-dark ml-3 mr-auto" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>    
-        </div>
+    <div>
+        <h1 class="d-inline-block"> Bank Branches </h1>
+        <div *ngIf="(callStatus$ | async)?.loading" class="spinner-border text-dark ml-3 d-inline-block" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>    
+        <a routerLink="/favourites">
+            <button class="btn-info btn float-right"> Favourites </button>
+        </a>
     </div>
     <br>
 

@@ -8,17 +8,20 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';    
+import { RouterModule } from "@angular/router";
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 import { RootStoreModule } from './root-store/root-store.module'
 
 import { BankComponent } from './bank/bank.component';
+import { FavouriteComponent } from "./favourite/favourite.component";
 
 @NgModule({
-  declarations: [AppComponent, BankComponent],
+  declarations: [AppComponent, BankComponent, FavouriteComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    RouterModule,
     FormsModule,
     HttpClientModule,
     StoreModule.forRoot({}),

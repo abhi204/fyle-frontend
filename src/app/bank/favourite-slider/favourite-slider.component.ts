@@ -34,9 +34,7 @@ export class FavouriteSliderComponent implements OnInit {
       FavouriteBanks[this.rowData.ifsc] = this.rowData;
     }
     else {
-      console.log("OLD: ", newFavouriteIfscList)
       newFavouriteIfscList.splice(newFavouriteIfscList.indexOf(this.rowData.ifsc), 1);
-      console.log("NEW: ", newFavouriteIfscList)
       delete FavouriteBanks[this.rowData.ifsc];
     }
     this.FavouriteIfscList = newFavouriteIfscList;
