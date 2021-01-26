@@ -1,17 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { apiBranchSearchUrl } from '../_consts/api';
+import { apiSearchUrl, apiBranchSearchUrl } from '../_consts/api';
 
 @Injectable({
   providedIn: 'root'
 })
-export class BranchSearchService {
+export class SearchService {
 
   constructor(private _http: HttpClient) { }
 
-  getBranchSearchData({searchText, pageSize}): Observable<any> {
-    return this._http.get<any>(apiBranchSearchUrl+`?q=${searchText}&limit=${pageSize}`)
+  // Search across ALL fields in database
+  getSearchData({searchText, pageSize, city}): Observable<any> {
+    return this._http.get<any>(apiSearchUrl+`?q=${searchText}&limit=${pageSize}&city=${city}`)
+  }
+
+  // Search by branch field
+  getBranchSearchData({searchText, pageSize, city}): Observable<any>{
+    return this._http.get<any>(apiBranchSearchUrl + `?q=${searchText}&limit=${pageSize}&city=${city}`)
   }
 
   fetchPage({pageUrl}): Observable<any> {

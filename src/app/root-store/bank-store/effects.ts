@@ -4,30 +4,45 @@ import { map, mergeMap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 import * as branchSearchActions from "./actions";
-import { BranchSearchService } from "../../services/branch-search.service";
+import { SearchService } from "../../services/branch-search.service";
 
 @Injectable()
 export class BranchSearchEffects {
 
-  @Effect() loadBranchSearch$ = this.actions$
+  @Effect() LoadSearch$ = this.actions$
     .pipe(
-      ofType<branchSearchActions.LoadBranchSearchAction>(branchSearchActions.BranchSearchActionTypes.LOAD_BRANCH_SEARCH),
+      ofType<branchSearchActions.LoadSearchAction>(branchSearchActions.SearchActionTypes.LOAD_SEARCH),
       mergeMap(
-        (action) => this.branchSearchService.getBranchSearchData(action.payload)
+        (action) => this.SearchService.getSearchData(action.payload)
           .pipe(
             map(response => {
-              return new branchSearchActions.LoadBranchSearchSuccessAction(response)
+              return new branchSearchActions.LoadSearchSuccessAction(response)
             }),
-            catchError(error => of(new branchSearchActions.LoadBranchSearchFailAction(error)))
+            catchError(error => of(new branchSearchActions.LoadSearchFailAction(error)))
           )
       ),
   )
 
-  @Effect() loadBranchSearchPage$ = this.actions$
+  @Effect() LoadBranchSearch$ = this.actions$
+    .pipe(
+      ofType<branchSearchActions.LoadSearchAction>(branchSearchActions.SearchActionTypes.LOAD_BRANCH_SEARCH),
+      mergeMap(
+        (action) => this.SearchService.getBranchSearchData(action.payload)
+          .pipe(
+            map(response => {
+              return new branchSearchActions.LoadSearchSuccessAction(response)
+            }),
+            catchError(error => of(new branchSearchActions.LoadSearchFailAction(error)))
+          )
+      ),
+  )
+  
+
+  @Effect() LoadSearchPage$ = this.actions$
   .pipe(
-    ofType<branchSearchActions.LoadSearchPageAction>(branchSearchActions.BranchSearchActionTypes.LOAD_PAGE),
+    ofType<branchSearchActions.LoadSearchPageAction>(branchSearchActions.SearchActionTypes.LOAD_PAGE),
     mergeMap(
-      (action) => this.branchSearchService.fetchPage(action.payload)
+      (action) => this.SearchService.fetchPage(action.payload)
         .pipe(
           map(response => {
             return new branchSearchActions.LoadSearchPageSuccessAction(response)
@@ -39,6 +54,6 @@ export class BranchSearchEffects {
 
   constructor(
     private actions$: Actions,
-    private branchSearchService: BranchSearchService
+    private SearchService: SearchService
   ) { }
 }

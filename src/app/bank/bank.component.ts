@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 
 import { Store, select } from "@ngrx/store";
-import { BranchSearchActionTypes as ActionTypes } from "../root-store/bank-store";
+import { SearchActionTypes as ActionTypes } from "../root-store/bank-store";
 import * as selectors from "../root-store/bank-store/selectors";
 import * as models from "../root-store/bank-store/models";
 import { Observable, Subject } from 'rxjs';
-// import { ApiCallStatus } from '../../_models';
 import { filter, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 @Component({
   selector: 'app-bank',
@@ -14,6 +13,17 @@ import { filter, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators'
   styleUrls: ['./bank.component.css']
 })
 export class BankComponent implements OnInit {
+  searchText: string;
+  pageSize: number = 20;
+  searchTextUpdate$ = new Subject<string>();
+  searchResult$: Observable<models.BranchSearch>;
+  callStatus$: Observable<any>;
+  city: string = 'All';
+  cities = ['BANGALORE', 'MUMBAI', 'DELHI', 'PUNE', 'CHENNAI', 'KOLKATA']
+  searchFilter: string = 'All';
+  searchFilters = ['All', 'Branch'];
+  
+
   tableSettings = {
     columns: {
       ifsc: {
@@ -44,37 +54,6 @@ export class BankComponent implements OnInit {
     }
   };
 
-  data = [
-    {
-      id: 1,
-      name: "Leanne Graham",
-      username: "Bret",
-      email: "Sincere@april.biz"
-    },
-    {
-      id: 2,
-      name: "Ervin Howell",
-      username: "Antonette",
-      email: "Shanna@melissa.tv"
-    },
-    
-    // ... list of items
-    
-    {
-      id: 11,
-      name: "Nicholas DuBuque",
-      username: "Nicholas.Stanton",
-      email: "Rey.Padberg@rosamond.biz"
-    }
-  ];
-
-  searchText: string;
-  pageSize: number = 20;
-  searchTextUpdate$ = new Subject<string>();
-  searchResult$: Observable<models.BranchSearch>;
-  callStatus$: Observable<any>;
-
-
   constructor(private store: Store<any>, private router: Router) { }
 
   ngOnInit(): void {
@@ -90,22 +69,43 @@ export class BankComponent implements OnInit {
       });
   }
 
+  selectCity(city){
+    this.city = city;
+    this.doSearch();
+  }
+
+  applyFilter(filter){
+    this.searchFilter = filter;
+    this.doSearch();
+  }
+
   doSearch() {
     if(this.pageSize <= 0){
       window.alert("Please enter a valid page size!")
       return;
     }
     
-    if (this.searchText)
-      this.store.dispatch({
-        type: ActionTypes.LOAD_BRANCH_SEARCH,
-        payload: {
-          searchText: this.searchText,
-          pageSize: this.pageSize
-        }
-      });
-  }
+    if (!!this.searchText){
+      var selectedCity = this.city === 'All' ? '' : this.city;
+      var payload = {
+        searchText: this.searchText,
+        pageSize: this.pageSize,
+        city: selectedCity
+      }
 
+      if(this.searchFilter==='Branch')
+        this.store.dispatch({
+          type: ActionTypes.LOAD_BRANCH_SEARCH,
+          payload
+        })
+      else if(this.searchFilter==='All')
+        this.store.dispatch({
+          type: ActionTypes.LOAD_SEARCH,
+          payload
+        })
+    }
+  }
+  
   fetchPage(pageUrl){
     if(pageUrl)
       this.store.dispatch({

@@ -1,16 +1,16 @@
-import { BranchSearchActionTypes as types } from "./actions";
+import { SearchActionTypes as types } from "./actions";
 import { BranchSearchState, initialState } from "./state";
 
 export function BranchSearchReducer(state = initialState, action): BranchSearchState {
     switch (action.type) {
-        case types.LOAD_BRANCH_SEARCH:{
+        case types.LOAD_SEARCH:{
             return {
                 ...state,
                 loading: true,
                 loaded: false
             };
         }
-        case types.LOAD_BRANCH_SEARCH_SUCCESS: {
+        case types.LOAD_SEARCH_SUCCESS: {
             return {
                 ...state,
                 loading: false,
@@ -18,7 +18,7 @@ export function BranchSearchReducer(state = initialState, action): BranchSearchS
                 searchData: action.payload,
             }
         }
-        case types.LOAD_BRANCH_SEARCH_FAIL: {
+        case types.LOAD_SEARCH_FAIL: {
             return {
                 ...state,
                 loading: false,
